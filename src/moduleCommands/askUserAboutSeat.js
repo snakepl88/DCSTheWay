@@ -76,7 +76,23 @@ const askUserAboutSeat = async (module, userPreferences) => {
           "Make sure you have downloaded the Patch for the Hercules module: https://github.com/Summit60/DCS-Hercules-TheWay-patch",
       }).then(() => "Hercules");
     }
-  } else return module;
+  }
+  else if (module === "AV8BNA") {
+    if (moduleSpecificPreferences?.includes("Waypoints"))
+      return "AV8BNA_WPT";
+    else if (moduleSpecificPreferences?.includes("Targetpoints"))
+      return "AV8BNA_TRGPT";
+    else {
+      return TwoOptionsDialog({
+        title: "Transfer to waypoints or target points? Note: Target points are limited to the first 10 waypoints from the list",
+        op1: "Waypoints",
+        op2: "Targetpoints",
+      }).then((option) =>
+        option === "Targetpoints" ? "AV8BNA_TRGPT" : "AV8BNA_WPT",
+      );
+    }
+  }
+  else return module;
 };
 
 export default askUserAboutSeat;

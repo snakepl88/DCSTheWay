@@ -56,7 +56,9 @@ export default function getModuleCommands(module, waypoints, buttonExtraDelay) {
       m2000.extraDelay = buttonExtraDelay;
       return m2000.createButtonCommands(waypoints);
     }
-    case "AV8BNA": {
+    case "AV8BNA_WPT":
+    case "AV8BNA_TRGPT": {
+      av8b.slotVariant = module;
       av8b.extraDelay = buttonExtraDelay;
       return av8b.createButtonCommands(waypoints);
     }
