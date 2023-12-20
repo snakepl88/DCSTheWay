@@ -84,7 +84,7 @@ const askUserAboutSeat = async (module, userPreferences) => {
       return "AV8BNA_TRGPT";
     else {
       return TwoOptionsDialog({
-        title: "Transfer to waypoints or target points? Note: Target points are limited to the first 10 waypoints from the list",
+        title: "Transfer to waypoints or target points? WARNING: Targetpoints option will overwrite current T1-T10 target points.",
         op1: "Waypoints",
         op2: "Targetpoints",
       }).then((option) =>
