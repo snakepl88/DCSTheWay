@@ -1,8 +1,8 @@
 import { Box, Button, Card, List, Typography } from "@mui/material";
 import WaypointItem from "./WaypointItem";
 import { useDispatch, useSelector } from "react-redux";
-import { waypointsActions } from "../store/waypoints";
-import Convertors from "../utils/Convertors";
+import { waypointsActions } from "../../store/waypoints";
+import Convertors from "../../utils/Convertors";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import {
   restrictToVerticalAxis,
@@ -13,7 +13,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import ConvertModuleWaypoints from "../utils/ConvertModuleWaypoints";
+import ConvertModuleWaypoints from "../../utils/ConvertModuleWaypoints";
 import { useEffect, useRef, useState } from "react";
 
 const WaypointList = () => {
@@ -56,8 +56,11 @@ const WaypointList = () => {
   };
 
   const elevationHandler = (event, id) => {
-    const elev = Convertors.fToM(event.target.value);
-    dispatch(waypointsActions.changeElevation({ id, elev }));
+    const enteredValue = event.target.value;
+    if (!isNaN(enteredValue)) {
+      const elev = Convertors.fToM(event.target.value);
+      dispatch(waypointsActions.changeElevation({ id, elev }));
+    }
   };
 
   const expandHandler = (id, isExpanded) => {
@@ -103,14 +106,8 @@ const WaypointList = () => {
                 {moduleCoordinates.map((wp) => (
                   <WaypointItem
                     key={wp.id}
-                    id={wp.id}
+                    wp={wp}
                     pending={false}
-                    name={wp.name}
-                    lat={wp.lat}
-                    long={wp.long}
-                    elev={wp.elev}
-                    latHem={wp.latHem}
-                    longHem={wp.longHem}
                     expanded={checkIfExpanded(wp.id)}
                     onRename={renameHandler}
                     onElevation={elevationHandler}
@@ -120,16 +117,7 @@ const WaypointList = () => {
                 ))}
 
                 {isPending && (
-                  <WaypointItem
-                    pending={true}
-                    name={"New Waypoint"}
-                    lat={null}
-                    long={null}
-                    elev={null}
-                    latHem={null}
-                    longHem={null}
-                    onSave={saveWaypointHandler}
-                  />
+                  <WaypointItem pending={true} onSave={saveWaypointHandler} />
                 )}
               </>
             ) : (

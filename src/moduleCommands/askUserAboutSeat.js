@@ -76,8 +76,7 @@ const askUserAboutSeat = async (module, userPreferences) => {
           "Make sure you have downloaded the Patch for the Hercules module: https://github.com/Summit60/DCS-Hercules-TheWay-patch",
       }).then(() => "Hercules");
     }
-  }
-  else if (module === "AV8BNA") {
+  } else if (module === "AV8BNA") {
     if (moduleSpecificPreferences?.includes("Waypoints"))
       return "AV8BNA_WPT";
     else if (moduleSpecificPreferences?.includes("Targetpoints"))
@@ -91,8 +90,21 @@ const askUserAboutSeat = async (module, userPreferences) => {
         option === "Targetpoints" ? "AV8BNA_TRGPT" : "AV8BNA_WPT",
       );
     }
-  }
-  else return module;
+  } else if (module === "OH58D") {
+    if (moduleSpecificPreferences?.includes("Right Seat"))
+      return "OH58Dright-seat";
+    else if (moduleSpecificPreferences?.includes("Left Seat"))
+      return "OH58Dleft-seat";
+    else {
+      return TwoOptionsDialog({
+        title: "What seat are you in?",
+        op1: "Right Seat",
+        op2: "Left Seat",
+      }).then((option) =>
+        option === "Left Seat" ? "OH58Dleft-seat" : "OH58Dright-seat",
+      );
+    }
+  } else return module;
 };
 
 export default askUserAboutSeat;
